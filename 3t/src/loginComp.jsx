@@ -11,7 +11,7 @@ export default function LoginComp() {
         // and whenever 'data' or 'pass' changes
         if (data && pass) {
             console.log('Sending data to server:', data, pass);
-            axios.post('http://localhost:3000/api/login', { data, pass }) // Use axios.post
+            axios.post('http://localhost:3000/api/login', { data:data, pass:pass }) // Use axios.post
                 .then(response => {
                     console.log('Response:', response.data); // Log the response data
                 })
