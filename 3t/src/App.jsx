@@ -1,11 +1,27 @@
-import { useState , useEffect} from 'react'
+import { useState , useEffect, Children} from 'react'
 import Bottombar from './bottombar'
 import TopComp from './topComp'
+import LoginComp from './loginComp'
+import {
+  createBrowserRouter as BrowserRouter,
+  RouterProvider,
+  createRoutesFromElements as CRE,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import './App.css'
 
 
-  
+const router = BrowserRouter(CRE(
+  <><Route
+    path="/"
+    element={<Bottombar />}>
+
+  </Route><Route path="/login" element={<LoginComp />}></Route></>
+
+));
+
 
 
 function App() {
@@ -13,9 +29,16 @@ function App() {
  
   return (
     <div className="App">
-      <TopComp />
-      <Bottombar />
-      <h1>hello</h1>
+
+ 
+ 
+      <RouterProvider router={router}/>
+      
+      
+      
+      
+    
+     
     </div>
   )
 }
