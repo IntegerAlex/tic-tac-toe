@@ -2,6 +2,7 @@ import { useState , useEffect, Children} from 'react'
 import Bottombar from './bottombar'
 import TopComp from './topComp'
 import LoginComp from './loginComp'
+import SignUpComp from './signUpComp'
 import {
   createBrowserRouter as BrowserRouter,
   RouterProvider,
@@ -14,11 +15,13 @@ import './App.css'
 
 
 const router = BrowserRouter(CRE(
-  <><Route
-    path="/"
-    element={<Bottombar />}>
+  <>
+  <Route path="/" element={<LoginComp/>}>
 
-  </Route><Route path="/login" element={<LoginComp />}></Route></>
+  </Route>
+  <Route path="/home" element={ [<TopComp/>,<Bottombar />]}></Route>
+  <Route path="/signup" element={<SignUpComp/>}></Route>
+  </>
 
 ));
 
