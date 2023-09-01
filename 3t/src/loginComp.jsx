@@ -17,7 +17,7 @@ export default function LoginComp() {
                 .then(response => {
                     console.log(login )
                     console.log('Response:', response.data);
-                    setLogin(true);
+                    setLogin(response.data.login);
                     console.log(login)
                    
                     // Log the response data

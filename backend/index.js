@@ -4,7 +4,8 @@ const cors = require( 'cors');
 const { test } = require('node:test');
 const bodyParser = require('body-parser');
 const { error } = require('console');
-const  {Auth} = require( './oauth.js');
+const  {Auth ,SignUp} = require( './oauth.js');
+
 
 
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send({message:'Hello World!'});
 });
+
 app.post('/api/login', async(req, res) => {
   const { data, pass } = req.body;
   console.log(JSON.stringify(data), pass);
@@ -24,6 +26,17 @@ app.post('/api/login', async(req, res) => {
   }else{
   console.log(result);
   res.send({ message: `Login Successful }`, data: data, pass: pass ,login: result }); 
+  }
+});
+
+app.post('/api/signup', async(req, res) => {
+  const { data, pass, email, phone } = req.body;
+  const result = await SignUp( data , pass, email, phone);
+  console.log(result)
+  if(result == false){
+    res.send({ message: `{Signup Failed }`, data: data, pass: pass ,email: email, phone: phone , login: result});
+  }else{
+  res.send({ message: `{Signup Successful${result} }`, data: data, pass: pass ,email: email, phone: phone , login: result});
   }
 });
 

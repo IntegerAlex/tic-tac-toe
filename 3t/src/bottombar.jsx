@@ -29,7 +29,7 @@ export default function Bottombar() {
             />
             <img src="./src/assets/wallet.svg" alt="wallet" width={40} height={40} />
             
-            <img onClick={() =>{ navigate("/login")
+            <img onClick={() =>{ navigate("/profile")
             console.log("clicked")}  }
                 id='user' src="./src/assets/user.svg"
                 alt="user"
