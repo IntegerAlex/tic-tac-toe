@@ -8,6 +8,7 @@ import {
   RouterProvider,
   createRoutesFromElements as CRE,
   Route,
+  Routes,
   Link,
 } from "react-router-dom";
 
@@ -19,7 +20,9 @@ const router = BrowserRouter(CRE(
   <Route path="/" element={<LoginComp/>}>
 
   </Route>
+
   <Route path="/home" element={ [<TopComp key="Top"/>,<Bottombar key="Bottom" />]}></Route>
+
   <Route path="/signup" element={<SignUpComp/>}></Route>
   </>
 

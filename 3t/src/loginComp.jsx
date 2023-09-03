@@ -3,53 +3,54 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import { useNavigate  , Link } from "react-router-dom"; 
 
-export default function LoginComp() {
-    const [data, setData] = useState('');
-    const [pass, setPass] = useState('');
-    const [login, setLogin] = useState(null);
-    const navigate = useNavigate();
-    useEffect(() => {
-        // This effect will run when the component mounts
-        // and whenever 'data' or 'pass' changes
-        if (data && pass) {
-            console.log('Sending data to server:', data, pass);
-            axios.post('http://localhost:3000/api/login', { data:data, pass:pass }) // Use axios.post
-                .then(response => {
-                    console.log(login )
-                    console.log('Response:', response.data);
-                    setLogin(response.data.login);
-                    console.log(login)
-                   
-                    // Log the response data
-                })
-                .catch((error) => {
-                    setLogin(false);
-                    console.error('Error:', error);
-                });
-                
+    export default function LoginComp() {
+        const [data, setData] = useState('');
+        const [pass, setPass] = useState('');
+        const [login, setLogin] = useState(null);
+        const [token, setToken] = useState(null);
+        const navigate = useNavigate();
+    
+        function handleSubmit() {
+            const userData = document.getElementById('user').value;
+            const userPass = document.getElementById('pass').value;
+            setData(userData);
+            setPass(userPass);
         }
-    }, [data, pass,login]);
-
-
-    useEffect(() => {
-        // Use a separate useEffect for the delayed navigation
-        if (login === true) {
-            // Delay the navigation by 4 seconds (4000 milliseconds)
-            const timeoutId = setTimeout(() => {
-                navigate("/home");
-            }, 3000);
-
-            // Cleanup the timeout if the component unmounts before the delay
-            return () => clearTimeout(timeoutId);
-        }
-    }, [login, navigate]);
-
-    function handleSubmit() {
-        const userData = document.getElementById('user').value;
-        const userPass = document.getElementById('pass').value;
-        setData(userData);
-        setPass(userPass);
-    }
+    
+        useEffect(() => {
+            // This effect will run when the component mounts
+            // and whenever 'login' changes
+            if (data && pass && login === null) {
+                console.log('Sending data to server:', data, pass);
+                axios.post('http://localhost:3000/api/login', { data: data, pass: pass })
+                    .then(response => {
+                        console.log('Response:', response.data);
+                        setLogin(response.data.login);
+                        const resToken =response.data.token;
+                        setToken(resToken);
+                        localStorage.setItem('token', JSON.stringify(response.data.token));
+                        console.log('Token:', resToken);
+    
+                        // Delayed navigation if login is successful
+                        if (response.data.login === true) {
+                            // Delay the navigation by 3 seconds (3000 milliseconds)
+                            const timeoutId = setTimeout(() => {
+                                navigate("/home");
+                            }, 3000);
+    
+                            // Cleanup the timeout if the component unmounts before the delay
+                            return () => clearTimeout(timeoutId);
+                        }
+                    })
+                    .catch((error) => {
+                        setLogin(false);
+                        console.error('Error:', error);
+                    });
+            }
+        }, [data, pass, login, navigate]);
+    
+        // Rest of your component code...
+    
 
     return (
         <div className="login">

@@ -4,7 +4,8 @@ const cors = require( 'cors');
 const { test } = require('node:test');
 const bodyParser = require('body-parser');
 const { error } = require('console');
-const  {Auth ,SignUp} = require( './oauth.js');
+const  {Auth ,SignUp ,Token ,GetUser} = require( './oauth.js');
+// const {GetUser } = require('./userData.js')
 
 
 
@@ -22,10 +23,11 @@ app.post('/api/login', async(req, res) => {
   console.log(JSON.stringify(data), pass);
   const result = await Auth( data , pass);
   if(result == false){
-    res.send({ message: `Login Failed }`, data: data, pass: pass ,login: result });
+    res.send({ message: `Login Failed }`, data: data,login: result });
   }else{
   console.log(result);
-  res.send({ message: `Login Successful }`, data: data, pass: pass ,login: result }); 
+  const token = await Token(data, pass)
+  res.send({ message: `Login Successful }`, data: data,login: result , token: token }); 
   }
 });
 
@@ -34,9 +36,23 @@ app.post('/api/signup', async(req, res) => {
   const result = await SignUp( data , pass, email, phone);
   console.log(result)
   if(result == false){
-    res.send({ message: `{Signup Failed }`, data: data, pass: pass ,email: email, phone: phone , login: result});
+    res.send({ message: `{Signup Failed }`, data: data,email: email, phone: phone , login: result});
   }else{
-  res.send({ message: `{Signup Successful${result} }`, data: data, pass: pass ,email: email, phone: phone , login: result});
+
+  res.send({ message: `{Signup Successful${result} }`,  login: result });
+  }
+});
+
+
+app.post('/api/getuser', async(req, res) => {
+  const {token} = req.body;
+  console.log(token);
+  const result = await GetUser(token)
+  if(result == false){
+    res.send({ message: result });
+  }else{
+  console.log(result);
+  res.send({ result: result }); 
   }
 });
 

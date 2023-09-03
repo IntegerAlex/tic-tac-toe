@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 const dotenv = require('dotenv');
-const e = require('express');
+const crypto = require('crypto');
 
 dotenv.config();
 
@@ -26,12 +26,13 @@ async function Auth(user , pass){
 async function SignUp(user , pass, email, phone){
     let verify = false
     const collection =client.db('test').collection('users')
-    const query = { username: user, password: pass, email: email, phone: phone };
+    const token = GenerateToken(16)
+    const query = { username: user, password: pass, email: email, phone: phone , token: token };
     const result = await collection.findOne({email:email})
 
         console.log(result)
-        console.log(result.username)   
-        if(result.email===email){
+
+        if(result != null){
             console.log("Email already exists")
             return false
         }
@@ -50,6 +51,41 @@ async function SignUp(user , pass, email, phone){
     
     }
 
+ 
+
+function GenerateToken(length) {
+  return crypto.randomBytes(length).toString('hex');
+}
+
+async function Token(user , pass){
+    const collection =client.db('test').collection('users')
+    const query = { username: user, password: pass};
+    const result = await collection.findOne(query)
+    if(result == null){
+        console.log("User not found")
+        return false
+    }
+    else{
+        console.log(result.token)
+        return result.token
+    }
+ 
+}
+async function GetUser(token) {
+    console.log(token);
+    const find =token;
+    const collection = client.db('test').collection('users');
+    const query = { token:find }; // Query based on _id
+    const result = await collection.findOne(query);
+    if (result == null) {
+      console.log('User not found');
+      // return false;
+    }
+    console.log(result);
+    return result;
+  }
+
+
 
 // Auth("")
-module.exports = {Auth, SignUp}
+module.exports = {Auth, SignUp ,GenerateToken ,Token, GetUser}
