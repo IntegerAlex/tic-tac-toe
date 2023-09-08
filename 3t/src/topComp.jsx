@@ -5,7 +5,7 @@ import './topComp.css'
 
 export default function TopComp() {
   const token = localStorage.getItem('token');
-  console.log('Token:', token); 
+  // console.log('Token:', token); 
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -19,7 +19,8 @@ export default function TopComp() {
           console.error('Error:', error);
         });
     }
-  }, [token]);
+  }, [token]); // This effect will run when 'token' changes, but only if 'token' is truthy
+  
 
   return (
     <div className="top-bar">

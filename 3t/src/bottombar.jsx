@@ -7,7 +7,7 @@ import {
     Link,
   } from "react-router-dom";
 import './bottombar.css'
-import React from 'react'
+import React from 'react';
 
 export default function Bottombar() {
   

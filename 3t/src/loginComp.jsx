@@ -1,7 +1,9 @@
-import './LoginComp.css';
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import { useNavigate  , Link } from "react-router-dom"; 
+// import './LoginComp.css';
+import './LC.css'
 
     export default function LoginComp() {
         const [data, setData] = useState('');
@@ -49,7 +51,7 @@ import { useNavigate  , Link } from "react-router-dom";
             }
         }, [data, pass, login, navigate]);
     
-        // Rest of your component code...
+        
     
 
     return (
